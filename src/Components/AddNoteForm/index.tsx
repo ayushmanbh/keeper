@@ -1,8 +1,9 @@
-import { Box, ClickAwayListener, TextField } from "@mui/material";
+import { Box, ClickAwayListener, IconButton, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { ChangeEvent, useRef, useState } from "react";
 import { useDataContext } from "../../Contexts/DataContext";
 import { v4 as uuid } from "uuid";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 export interface Note {
   id: string;
@@ -100,6 +101,13 @@ const AddNoteForm = () => {
             if (formRef.current) formRef.current.style.minHeight = "70px";
           }}
         />
+        {showTextfield && (
+          <div style={{ marginLeft: "auto" }}>
+            <IconButton onClick={() => handleClickAway()}>
+              <AddOutlinedIcon />
+            </IconButton>
+          </div>
+        )}
       </Form>
     </ClickAwayListener>
   );
