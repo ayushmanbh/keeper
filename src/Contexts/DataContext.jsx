@@ -37,6 +37,7 @@ const DataProvider = (props) => {
         setError({ set: true, message: error.message });
       }
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addNote = (note) => {
