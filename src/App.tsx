@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Alert, Snackbar } from "@mui/material";
+import "./App.css";
+import AddNoteForm, { Note } from "./Components/AddNoteForm";
+import Layout from "./Components/Layout";
+import Notes from "./Components/Notes";
+import { useDataContext } from "./Contexts/DataContext";
 
 function App() {
+  const { notes, error, setError } = useDataContext();
+  const pinnedNotes = notes.filter((note: Note) => note.isPinned);
+  const unpinnedNotes = notes.filter((note: Note) => !note.isPinned);
+
+  const handleClose = () => {
+    setError({ set: false, message: "" });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <AddNoteForm />
+      {pinnedNotes.length > 0 && (
+        <Notes notes={pinnedNotes} notesType="pinned" />
+      )}
+      {unpinnedNotes.length > 0 && (
+        <Notes
+          notes={unpinnedNotes}
+          notesType={pinnedNotes.length > 0 ? "unpinned" : null}
+        />
+      )}
+      <Snackbar open={error.set} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          {error?.message}
+        </Alert>
+      </Snackbar>
+    </Layout>
   );
 }
 
